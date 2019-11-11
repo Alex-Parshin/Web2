@@ -6,12 +6,12 @@ var database;
 var app=express();
 var urlencodedParser=bodyParser.urlencoded({extended:false});
 app.use(express.static("../client"));
-app.post("enroll",urlencodedParser,
+app.post("/enroll",urlencodedParser,
     function(request,response){
     var records=database.collection("records");
     records.insert({
     firstName:request.body.firstName,
-        lastName:request.body.lastName
+    lastName:request.body.lastName
 },function(err,result){
     response.redirect("/records.html");
 });
@@ -20,7 +20,7 @@ app.post("enroll",urlencodedParser,
 app.get("/records",function(request,response){
     var records=database.collection("records");
     records.find().toArray(function(err,documents){
-        
+      response.send(JSON.stringify(documents));
     });
 });
 mongoClient.connect(url,function(err,db){
